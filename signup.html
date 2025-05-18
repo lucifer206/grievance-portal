@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>💖 Signup</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="login-container">
+    <h1>🎀 Create Account 🎀</h1>
+    <input type="email" id="email" placeholder="📧 Email" />
+    <input type="password" id="password" placeholder="🔐 Password" />
+    <button onclick="signup()">🌼 Sign Up</button>
+    <p>Already registered? <a href="index.html">💌 Login</a></p>
+  </div>
+
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyDLKvcfJyDmuVCyhst-osOjJEm4dcEMQsA",
+      authDomain: "grievanceportal-85e26.firebaseapp.com",
+      projectId: "grievanceportal-85e26"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+
+    function signup() {
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+
+      auth.createUserWithEmailAndPassword(email, password)
+        .then(() => window.location.href = "gf.html")
+        .catch(error => alert("🚫 " + error.message));
+    }
+  </script>
+</body>
+</html>
