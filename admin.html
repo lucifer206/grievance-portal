@@ -1,57 +1,42 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8" />
-  <title>📂 Admin - Her Grievances</title>
-  <link rel="stylesheet" href="style.css" />
+  <title>📚 Admin Grievances</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <div class="form-container">
-    <h1>📚 GF’s Grievances</h1>
-    <div id="complaints-list"></div>
+    <h1>🧾 All Grievances</h1>
+    <div id="list"></div>
   </div>
 
-  <!-- Firebase -->
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
   <script>
     const firebaseConfig = {
       apiKey: "AIzaSyDLKvcfJyDmuVCyhst-osOjJEm4dcEMQsA",
       authDomain: "grievanceportal-85e26.firebaseapp.com",
       databaseURL: "https://grievanceportal-85e26-default-rtdb.firebaseio.com",
-      projectId: "grievanceportal-85e26",
-      storageBucket: "grievanceportal-85e26.firebasestorage.app",
-      messagingSenderId: "435934584957",
-      appId: "1:435934584957:web:7d3d0e8d9c6412221b9114",
-      measurementId: "G-389C4SPMNL"
+      projectId: "grievanceportal-85e26"
     };
-
     firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
     const db = firebase.database();
 
-    db.ref("grievances").on("value", function(snapshot) {
-      const container = document.getElementById("complaints-list");
-      container.innerHTML = "";
+    auth.onAuthStateChanged(user => {
+      if (!user || user.email !== "admin@cutie.com") {
+        window.location.href = "index.html";
+      } else {
+        db.ref("grievances").once("value", snapshot => {
+          const data = snapshot.val();
+          const list = document.getElementById("list");
+          if (!data) return (list.innerHTML = "<p>No grievances yet! 🎉</p>");
 
-      if (!snapshot.exists()) {
-        container.innerHTML = "<p>🎉 No complaints yet! You're doing great!</p>";
-        return;
-      }
-
-      const data = snapshot.val();
-      let count = 1;
-
-      for (let key in data) {
-        const { mood, complaint, time } = data[key];
-
-        const div = document.createElement("div");
-        div.className = "complaint-card";
-        div.innerHTML = `
-          <h3>${count++}. Mood: ${mood}</h3>
-          <p>${complaint}</p>
-          <small>🕒 ${time}</small>
-        `;
-        container.appendChild(div);
+          Object.entries(data).forEach(([id, entry], i) => {
+            list.innerHTML += `<div><h3>${i + 1}. ${entry.mood}</h3><p>${entry.complaint}</p><small>🕒 ${entry.time}</small></div><hr>`;
+          });
+        });
       }
     });
   </script>
