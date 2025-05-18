@@ -10,24 +10,50 @@
     <h1>📚 GF’s Grievances</h1>
     <div id="complaints-list"></div>
   </div>
-  <script>
-    const complaints = JSON.parse(localStorage.getItem("complaints") || "[]");
-    const container = document.getElementById("complaints-list");
 
-    if (complaints.length === 0) {
-      container.innerHTML = "<p>🎉 No complaints yet! You're doing great!</p>";
-    } else {
-      complaints.forEach((item, index) => {
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyDLKvcfJyDmuVCyhst-osOjJEm4dcEMQsA",
+      authDomain: "grievanceportal-85e26.firebaseapp.com",
+      databaseURL: "https://grievanceportal-85e26-default-rtdb.firebaseio.com",
+      projectId: "grievanceportal-85e26",
+      storageBucket: "grievanceportal-85e26.firebasestorage.app",
+      messagingSenderId: "435934584957",
+      appId: "1:435934584957:web:7d3d0e8d9c6412221b9114",
+      measurementId: "G-389C4SPMNL"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+
+    db.ref("grievances").on("value", function(snapshot) {
+      const container = document.getElementById("complaints-list");
+      container.innerHTML = "";
+
+      if (!snapshot.exists()) {
+        container.innerHTML = "<p>🎉 No complaints yet! You're doing great!</p>";
+        return;
+      }
+
+      const data = snapshot.val();
+      let count = 1;
+
+      for (let key in data) {
+        const { mood, complaint, time } = data[key];
+
         const div = document.createElement("div");
         div.className = "complaint-card";
         div.innerHTML = `
-          <h3>${index + 1}. Mood: ${item.mood}</h3>
-          <p>${item.complaint}</p>
-          <small>🕒 ${item.time}</small>
+          <h3>${count++}. Mood: ${mood}</h3>
+          <p>${complaint}</p>
+          <small>🕒 ${time}</small>
         `;
         container.appendChild(div);
-      });
-    }
+      }
+    });
   </script>
 </body>
 </html>
