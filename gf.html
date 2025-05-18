@@ -19,17 +19,43 @@
     <textarea id="complaint" maxlength="4000" placeholder="📝 Tell me what's wrong, cutie..."></textarea>
     <button onclick="submitGrievance()">💌 Submit</button>
   </div>
+
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
   <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyDLKvcfJyDmuVCyhst-osOjJEm4dcEMQsA",
+      authDomain: "grievanceportal-85e26.firebaseapp.com",
+      databaseURL: "https://grievanceportal-85e26-default-rtdb.firebaseio.com",
+      projectId: "grievanceportal-85e26",
+      storageBucket: "grievanceportal-85e26.firebasestorage.app",
+      messagingSenderId: "435934584957",
+      appId: "1:435934584957:web:7d3d0e8d9c6412221b9114",
+      measurementId: "G-389C4SPMNL"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+
     function submitGrievance() {
       const mood = document.getElementById("mood").value;
       const complaint = document.getElementById("complaint").value;
 
-      let complaints = JSON.parse(localStorage.getItem("complaints") || "[]");
-      complaints.push({ mood, complaint, time: new Date().toLocaleString() });
-      localStorage.setItem("complaints", JSON.stringify(complaints));
+      const grievance = {
+        mood,
+        complaint,
+        time: new Date().toLocaleString()
+      };
 
-      alert("😔 I'm soooo sorry! But I promise to be better! 🐶\n\nHere’s a cookie 🍪 and a cuddle 🧸");
-      window.location.href = "gf.html"; // Reset or go somewhere else
+      db.ref("grievances").push(grievance, (error) => {
+        if (error) {
+          alert("😢 Something went wrong. I'm still learning, please forgive me! 🐢");
+        } else {
+          alert("😔 I'm sooo sorry! I promise to be better! 🍪 Here’s a cookie and a cuddle 🧸");
+          document.getElementById("complaint").value = "";
+        }
+      });
     }
   </script>
 </body>
