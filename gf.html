@@ -1,60 +1,52 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8" />
-  <title>😢 Complain Away 💖</title>
-  <link rel="stylesheet" href="style.css" />
+  <title>💌 Submit Grievance</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <div class="form-container">
-    <h1>🌈 What's the Mood Today? 🌈</h1>
+    <h1>💔 What's up, love?</h1>
     <select id="mood">
       <option>😢 Sad</option>
       <option>😡 Angry</option>
-      <option>🥺 Upset</option>
-      <option>😤 Irritated</option>
       <option>💔 Heartbroken</option>
-      <option>😕 Confused</option>
     </select>
-    <textarea id="complaint" maxlength="4000" placeholder="📝 Tell me what's wrong, cutie..."></textarea>
-    <button onclick="submitGrievance()">💌 Submit</button>
+    <textarea id="complaint" maxlength="4000" placeholder="Let it out... 💬"></textarea>
+    <button onclick="submitGrievance()">📨 Submit</button>
   </div>
 
-  <!-- Firebase -->
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
   <script>
     const firebaseConfig = {
       apiKey: "AIzaSyDLKvcfJyDmuVCyhst-osOjJEm4dcEMQsA",
       authDomain: "grievanceportal-85e26.firebaseapp.com",
       databaseURL: "https://grievanceportal-85e26-default-rtdb.firebaseio.com",
-      projectId: "grievanceportal-85e26",
-      storageBucket: "grievanceportal-85e26.firebasestorage.app",
-      messagingSenderId: "435934584957",
-      appId: "1:435934584957:web:7d3d0e8d9c6412221b9114",
-      measurementId: "G-389C4SPMNL"
+      projectId: "grievanceportal-85e26"
     };
-
     firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
     const db = firebase.database();
+
+    auth.onAuthStateChanged(user => {
+      if (!user || user.email === "admin@cutie.com") {
+        window.location.href = "index.html";
+      }
+    });
 
     function submitGrievance() {
       const mood = document.getElementById("mood").value;
       const complaint = document.getElementById("complaint").value;
 
-      const grievance = {
+      db.ref("grievances").push({
         mood,
         complaint,
-        time: new Date().toLocaleString()
-      };
-
-      db.ref("grievances").push(grievance, (error) => {
-        if (error) {
-          alert("😢 Something went wrong. I'm still learning, please forgive me! 🐢");
-        } else {
-          alert("😔 I'm sooo sorry! I promise to be better! 🍪 Here’s a cookie and a cuddle 🧸");
-          document.getElementById("complaint").value = "";
-        }
+        time: new Date().toISOString()
+      }).then(() => {
+        alert("🥹 Okay okay, I feel super guilty now! Please don't stay mad 💗");
+        document.getElementById("complaint").value = "";
       });
     }
   </script>
