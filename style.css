@@ -1,0 +1,49 @@
+body {
+  background: linear-gradient(to right, #ffc0cb, #ffe4e1);
+  font-family: 'Comic Sans MS', cursive, sans-serif;
+  text-align: center;
+  padding: 40px;
+  color: #d63384;
+}
+
+.login-container, .form-container {
+  background: #fff0f5;
+  padding: 30px;
+  border-radius: 20px;
+  width: 90%;
+  max-width: 500px;
+  margin: auto;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+}
+
+input, select, textarea {
+  width: 90%;
+  padding: 10px;
+  margin: 10px 0;
+  border: 2px dashed #ff69b4;
+  border-radius: 10px;
+  font-size: 16px;
+}
+
+button {
+  background-color: #ff69b4;
+  color: white;
+  padding: 10px 20px;
+  font-size: 18px;
+  border: none;
+  border-radius: 15px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #ff1493;
+}
+
+.complaint-card {
+  background-color: #fffafa;
+  border: 2px solid #ffa6c9;
+  border-radius: 10px;
+  margin: 10px;
+  padding: 15px;
+  text-align: left;
+}

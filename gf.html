@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>😢 Complain Away 💖</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="form-container">
+    <h1>🌈 What's the Mood Today? 🌈</h1>
+    <select id="mood">
+      <option>😢 Sad</option>
+      <option>😡 Angry</option>
+      <option>🥺 Upset</option>
+      <option>😤 Irritated</option>
+      <option>💔 Heartbroken</option>
+      <option>😕 Confused</option>
+    </select>
+    <textarea id="complaint" maxlength="4000" placeholder="📝 Tell me what's wrong, cutie..."></textarea>
+    <button onclick="submitGrievance()">💌 Submit</button>
+  </div>
+  <script>
+    function submitGrievance() {
+      const mood = document.getElementById("mood").value;
+      const complaint = document.getElementById("complaint").value;
+
+      let complaints = JSON.parse(localStorage.getItem("complaints") || "[]");
+      complaints.push({ mood, complaint, time: new Date().toLocaleString() });
+      localStorage.setItem("complaints", JSON.stringify(complaints));
+
+      alert("😔 I'm soooo sorry! But I promise to be better! 🐶\n\nHere’s a cookie 🍪 and a cuddle 🧸");
+      window.location.href = "gf.html"; // Reset or go somewhere else
+    }
+  </script>
+</body>
+</html>
