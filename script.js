@@ -14,17 +14,18 @@ function login() {
   const password = document.getElementById("password").value;
 
   auth.signInWithEmailAndPassword(email, password)
-    .then(userCred => userCred.user.getIdTokenResult(true))
-    .then(idTokenResult => {
-      if (idTokenResult.claims.admin) {
-        window.location.href = "admin.html";
-      } else {
-        window.location.href = "form.html";
-      }
-    })
-    .catch(err => {
-      document.getElementById("error").innerText = "❌ " + err.message;
-    });
+  .then(userCred => userCred.user.getIdTokenResult(true))
+  .then(idTokenResult => {
+    if (idTokenResult.claims.admin) {
+      window.location.href = "admin.html";
+    } else {
+      window.location.href = "form.html";
+    }
+  })
+  .catch(err => {
+    document.getElementById("error").innerText = "❌ " + err.message;
+  });
+
 }
 
 function signup() {
