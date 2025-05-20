@@ -24,20 +24,25 @@
     const auth = firebase.auth();
     const db = firebase.database();
 
-    auth.onAuthStateChanged(user => {
-      if (!user || user.email !== "aritraroy206@gmail.com") {
-        window.location.href = "index.html";
-      } else {
-        db.ref("grievances").once("value", snapshot => {
-          const data = snapshot.val();
-          const list = document.getElementById("list");
-          if (!data) return (list.innerHTML = "<p>No grievances yet! 🎉</p>");
-
-          Object.entries(data).forEach(([id, entry], i) => {
-            list.innerHTML += `<div><h3>${i + 1}. ${entry.mood}</h3><p>${entry.complaint}</p><small>🕒 ${entry.time}</small></div><hr>`;
-          });
-        });
+    auth.onAuthStateChanged(async user => {
+      if (!user) {
+        return window.location.href = "index.html";
       }
+
+      const token = await user.getIdTokenResult();
+      if (!token.claims.admin) {
+        return window.location.href = "index.html";
+      }
+
+      db.ref("grievances").once("value", snapshot => {
+        const data = snapshot.val();
+        const list = document.getElementById("list");
+        if (!data) return (list.innerHTML = "<p>No grievances yet! 🎉</p>");
+
+        Object.entries(data).forEach(([id, entry], i) => {
+          list.innerHTML += `<div><h3>${i + 1}. ${entry.mood}</h3><p>${entry.complaint}</p><small>🕒 ${entry.time}</small></div><hr>`;
+        });
+      });
     });
   </script>
 </body>
