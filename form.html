@@ -1,44 +1,25 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>😭 Submit Grievance</title>
+  <title>😢 Grievance Form</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <div class="form-container">
-    <h1>😞 What's Wrong, Love?</h1>
+    <h1>💗 How are you feeling?</h1>
     <select id="mood">
-      <option>😡 Angry</option>
+      <option>😠 Angry</option>
       <option>😢 Sad</option>
       <option>😤 Frustrated</option>
-      <option>😒 Annoyed</option>
+      <option>🥺 Disappointed</option>
+      <option>😭 Heartbroken</option>
     </select>
-    <textarea id="complaint" placeholder="Tell me everything... (Max 4000 chars)"></textarea>
-    <button onclick="submitGrievance()">Submit 😔</button>
+    <textarea id="complaint" maxlength="4000" placeholder="💭 Tell me everything..."></textarea>
+    <button onclick="submitGrievance()">📨 Submit</button>
   </div>
-
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
   <script src="script.js"></script>
-  <script>
-    const db = firebase.database();
-    const auth = firebase.auth();
-
-    function submitGrievance() {
-      const mood = document.getElementById("mood").value;
-      const complaint = document.getElementById("complaint").value;
-
-      auth.onAuthStateChanged(user => {
-        if (user) {
-          db.ref("grievances").push({
-            mood,
-            complaint,
-            time: new Date().toLocaleString()
-          }).then(() => {
-            alert("😭 Your grievance has been noted. We are soooo sorry, love! 💖 Here's a cookie 🍪");
-            window.location.href = "form.html";
-          });
-        }
-      });
-    }
-  </script>
 </body>
 </html>
