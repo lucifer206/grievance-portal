@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>😭 Submit Grievance</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="form-container">
+    <h1>😞 What's Wrong, Love?</h1>
+    <select id="mood">
+      <option>😡 Angry</option>
+      <option>😢 Sad</option>
+      <option>😤 Frustrated</option>
+      <option>😒 Annoyed</option>
+    </select>
+    <textarea id="complaint" placeholder="Tell me everything... (Max 4000 chars)"></textarea>
+    <button onclick="submitGrievance()">Submit 😔</button>
+  </div>
+
+  <script src="script.js"></script>
+  <script>
+    const db = firebase.database();
+    const auth = firebase.auth();
+
+    function submitGrievance() {
+      const mood = document.getElementById("mood").value;
+      const complaint = document.getElementById("complaint").value;
+
+      auth.onAuthStateChanged(user => {
+        if (user) {
+          db.ref("grievances").push({
+            mood,
+            complaint,
+            time: new Date().toLocaleString()
+          }).then(() => {
+            alert("😭 Your grievance has been noted. We are soooo sorry, love! 💖 Here's a cookie 🍪");
+            window.location.href = "form.html";
+          });
+        }
+      });
+    }
+  </script>
+</body>
+</html>
